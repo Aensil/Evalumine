@@ -11874,3 +11874,9 @@ html {
       order: 2;
   }
 }
+
+
+.centered-image {
+  display: block;
+  margin: auto;
+}
