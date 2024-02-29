@@ -1296,7 +1296,7 @@ progress {
   }
   .col-lg-8 {
     flex: 0 0 auto;
-    width: 66.66666667%;
+    /*width: 66.66666667%;   change, evalumine*/  
   }
   .col-lg-9 {
     flex: 0 0 auto;
