@@ -156,6 +156,35 @@
         </div>
     </div>
 </footer>
+<div id="whatsapp-embedded-signup"></div>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId: 'TU_APP_ID',
+            xfbml: true,
+            version: 'v10.0'
+        });
+
+        FB.ui({
+            method: 'whatsapp_business_embedded_signup',
+            app_id: 'TU_APP_ID',
+            redirect_uri: 'TU_REDIRECT_URI',
+            setup: {
+                webhook_uri: 'TU_WEBHOOK_URI'
+            }
+        }, function(response) {
+            console.log(response);
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 </body>
 
 </html>
