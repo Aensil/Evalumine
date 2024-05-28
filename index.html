@@ -157,33 +157,73 @@
     </div>
 </footer>
 <div id="whatsapp-embedded-signup"></div>
+<!-- Facebook Login Button -->
+<button onclick="launchWhatsAppSignup()" style="background-color: #1877f2; border: 0; border-radius: 4px; color: #fff; cursor: pointer; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; height: 40px; padding: 0 24px;">Login with Facebook</button>
+
 <script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId: '3826223124276160',
-            xfbml: true,
-            version: 'v10.0'
-        });
-
-        FB.ui({
-            method: 'whatsapp_business_embedded_signup',
-            app_id: '3826223124276160',
-            redirect_uri: 'TU_REDIRECT_URI',
-            setup: {
-                webhook_uri: 'https://app-evalumine-f96ec2ff38fb.herokuapp.com/webhook'
-            }
-        }, function(response) {
-            console.log(response);
-        });
-    };
-
-    (function(d, s, id){
+    // Load the Facebook JavaScript SDK
+    (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
+        if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
         js.src = "https://connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
+    // Initialize the Facebook SDK
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '3826223124276160', // Replace with your Facebook App ID
+            cookie: true,
+            xfbml: true,
+            version: 'v20.0' // Replace with your desired Graph API version
+        });
+    };
+
+    // Facebook Login with JavaScript SDK
+    function launchWhatsAppSignup() {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                const code = response.authResponse.code;
+                // Transmit the code to your backend for server-to-server call
+                console.log('Login successful. Code:', code);
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        }, {
+            config_id: '<CONFIG_ID>', // Replace with your configuration ID
+            response_type: 'code',
+            override_default_response_type: true,
+            extras: {
+                setup: {
+                    // Add any prefilled form data here
+                }
+            }
+        });
+    }
+
+    // Session logging
+    const sessionInfoListener = (event) => {
+        if (event.origin !== "https://www.facebook.com" && event.origin !== "https://web.facebook.com") {
+            return;
+        }
+        try {
+            const data = JSON.parse(event.data);
+            if (data.type === 'WA_EMBEDDED_SIGNUP') {
+                if (data.event === 'FINISH') {
+                    const { phone_number_id, waba_id } = data.data;
+                    console.log('Signup completed. Phone ID:', phone_number_id, 'WABA ID:', waba_id);
+                } else {
+                    const { current_step } = data.data;
+                    console.log('Signup canceled at step:', current_step);
+                }
+            }
+        } catch (error) {
+            console.log('Non JSON Response', event.data);
+        }
+    };
+
+    window.addEventListener('message', sessionInfoListener);
 </script>
 </body>
 
