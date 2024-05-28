@@ -160,17 +160,17 @@
 <script>
     window.fbAsyncInit = function() {
         FB.init({
-            appId: 'TU_APP_ID',
+            appId: '3826223124276160',
             xfbml: true,
             version: 'v10.0'
         });
 
         FB.ui({
             method: 'whatsapp_business_embedded_signup',
-            app_id: 'TU_APP_ID',
+            app_id: '3826223124276160',
             redirect_uri: 'TU_REDIRECT_URI',
             setup: {
-                webhook_uri: 'TU_WEBHOOK_URI'
+                webhook_uri: 'https://app-evalumine-f96ec2ff38fb.herokuapp.com/webhook'
             }
         }, function(response) {
             console.log(response);
